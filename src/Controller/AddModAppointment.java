@@ -246,9 +246,12 @@ public class AddModAppointment implements Initializable {
         LocalTime endTime = appEndTime.getSelectionModel().getSelectedItem();
         LocalDateTime formatEndDateTime = LocalDateTime.of(endDate, endTime);
         Instant endDateTime = Timestamp.valueOf(formatEndDateTime.format(dateTimeFormatter)).toInstant();
+        Instant formatNowDateTime = Timestamp.valueOf(LocalDateTime.now().format(dateTimeFormatter)).toInstant();
 
         LocalDateTime utcStart = LocalDateTime.ofInstant(startDateTime, ZoneId.of("UTC"));
         LocalDateTime utcEnd = LocalDateTime.ofInstant(endDateTime, ZoneId.of("UTC"));
+        LocalDateTime utcNow = LocalDateTime.ofInstant(formatNowDateTime, ZoneId.of("UTC"));
+
         if (startDateTime.equals(endDateTime)) {
             Alert olAlert = new Alert(Alert.AlertType.ERROR);
             olAlert.setTitle("Invalid Date/Time");
@@ -288,14 +291,14 @@ public class AddModAppointment implements Initializable {
                 addUpdateAppointment.setString(4, type);
                 addUpdateAppointment.setTimestamp(5, Timestamp.valueOf(utcStart));
                 addUpdateAppointment.setTimestamp(6, Timestamp.valueOf(utcEnd));
-                addUpdateAppointment.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
+                addUpdateAppointment.setTimestamp(7, Timestamp.valueOf(utcNow));
                 addUpdateAppointment.setString(8, username);
                 addUpdateAppointment.setInt(9, customerID);
                 addUpdateAppointment.setInt(10, userID);
                 addUpdateAppointment.setInt(11, contactID);
 
             if (Appointment.inModify == false) {
-                    addUpdateAppointment.setTimestamp(12, Timestamp.valueOf(LocalDateTime.now()));
+                    addUpdateAppointment.setTimestamp(12, Timestamp.valueOf(utcNow));
                     addUpdateAppointment.setString(13, username);
                 } else if (Appointment.inModify == true) {
                     addUpdateAppointment.setInt(12, appointmentID);

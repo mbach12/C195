@@ -105,7 +105,13 @@ public class Queries {
      * Method to return a query to get all customers
      * @return Query to get all customers
      */
-    public static String getCustomers(){ return "SELECT * FROM customers"; }
+    public static String getCustomers(){ return "SELECT C.Customer_ID as Customer_ID, C.Customer_Name as Customer_Name, C.Address as Address, C.Postal_Code as Postal_Code,\n" +
+            "C.Phone as Phone, C.Division_ID as Division_ID, CO.Country as Country FROM customers C\n" +
+            "LEFT JOIN first_level_divisions FLD\n" +
+            "on FLD.Division_ID = C.Division_ID\n" +
+            "LEFT JOIN countries CO\n" +
+            "ON CO.Country_ID = FLD.COUNTRY_ID\n" +
+            "\n"; }
     /**
      * Method to return a query to get the country id and division for a specific division id.
      * @return Query to get the country id and division for a specific division id.

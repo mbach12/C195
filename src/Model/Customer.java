@@ -5,7 +5,7 @@ package Model;
  */
 public class Customer {
     private int id;
-    private String name, address, postal, phone, div;
+    private String name, address, postal, phone, div, country;
 
     /**
      *
@@ -16,15 +16,31 @@ public class Customer {
      * @param postal Customer Postal Code
      * @param phone Customer Phone Number
      */
-    public Customer(int id, String div, String name, String address, String postal, String phone) {
+    public Customer(int id, String div, String name, String address, String postal, String phone, String country) {
         this.id = id;
         this.div = div;
         this.name = name;
         this.address = address;
         this.postal = postal;
         this.phone = phone;
+        this.country = country;
     }
 
+    /**
+     * Method to get the customer country
+     * @return Country
+     */
+    public String getCountry() {
+        return country;
+    }
+
+    /**
+     * Method to set the customer country
+     * @param country Country
+     */
+    public void setCountry(String country) {
+        this.country = country;
+    }
     /**
      * Method to get the customer ID
      * @return Customer ID

@@ -4,20 +4,21 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="450.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Customers">
+<AnchorPane prefHeight="450.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Customers">
    <children>
       <Label alignment="CENTER" layoutX="309.0" layoutY="10.0" prefHeight="33.0" prefWidth="90.0" text="Customers" textFill="#2f00bc">
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
-      <TableView fx:id="customersTable" layoutX="14.0" layoutY="50.0" prefHeight="332.0" prefWidth="722.0">
+      <TableView fx:id="customersTable" layoutX="14.0" layoutY="50.0" prefHeight="332.0" prefWidth="920.0">
         <columns>
           <TableColumn fx:id="customersID" prefWidth="49.19998359680176" text="ID" />
           <TableColumn fx:id="customersName" prefWidth="122.59996795654297" text="Name" />
             <TableColumn fx:id="customersAddress" prefWidth="135.0" text="Address" />
-            <TableColumn fx:id="customersDiv" prefWidth="127.20001220703125" text="FL Division" />
-            <TableColumn fx:id="customersPostal" prefWidth="122.20010375976562" text="Postal" />
-            <TableColumn fx:id="customersPhone" prefWidth="169.39996337890625" text="Phone" />
+            <TableColumn fx:id="customersDiv" prefWidth="116.0" text="Division" />
+            <TableColumn fx:id="customersPostal" prefWidth="166.39993286132812" text="Postal" />
+            <TableColumn fx:id="customersCountry" prefWidth="148.0" text="Country" />
+            <TableColumn fx:id="customersPhone" prefWidth="182.199951171875" text="Phone" />
         </columns>
       </TableView>
       <Button fx:id="add" layoutX="256.0" layoutY="400.0" mnemonicParsing="false" onAction="#addClick" text="Add" />

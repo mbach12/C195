@@ -74,9 +74,13 @@ public class Customers implements Initializable {
      * Check if the listener is already enabled
      */
     public boolean listenerEnabled = false;
+    /**
+     * Customer country
+     */
+    public TableColumn customersCountry;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {  getCustomer.setData();  }
+    public void initialize(URL url, ResourceBundle resourceBundle) {  getCustomer();  }
 
     /**
      * This method is used to check how many appointments a customer has and return that number.
@@ -120,13 +124,13 @@ public class Customers implements Initializable {
     public void refreshTable() {
         customersTable.refresh();
         customersTable.getItems().clear();
-        getCustomer.setData();
+        getCustomer();
 
     }
     /**
-     * This is a Lambda expression that creates an object that implements the SetData interface. This method will get the customer data from the DB and populate it in the customer table.
+     * This method will get the customer data from the DB and populate it in the customer table.
      */
-        SetData getCustomer = () -> {
+        public void getCustomer() {
             try {
                 Connection connection = JDBC.getConnection();
                 PreparedStatement customerQuery = connection.prepareStatement(Queries.getCustomers());
@@ -137,13 +141,14 @@ public class Customers implements Initializable {
                     String cAddress = results.getString("Address");
                     String cPostal = results.getString("Postal_Code");
                     String cPhone = results.getString("Phone");
+                    String cCountry = results.getString("Country");
                     int cDivID = results.getInt("Division_ID");
                     PreparedStatement dNameQuery = connection.prepareStatement(Queries.getDivisionName());
                     dNameQuery.setInt(1,cDivID);
                     ResultSet resultsDName = dNameQuery.executeQuery();
                     resultsDName.next();
                     String cDName =  resultsDName.getString("Division");
-                    Customer Customers = new Customer(cID, cDName, cName, cAddress, cPostal, cPhone);
+                    Customer Customers = new Customer(cID, cDName, cName, cAddress, cPostal, cPhone, cCountry);
                     customersList.add(Customers);
                 }
                 customersID.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -152,6 +157,7 @@ public class Customers implements Initializable {
                 customersAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
                 customersPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
                 customersDiv.setCellValueFactory(new PropertyValueFactory<>("div"));
+                customersCountry.setCellValueFactory(new PropertyValueFactory<>("country"));
                 customersTable.setItems(customersList);
 
             } catch(SQLException sqlException) {
