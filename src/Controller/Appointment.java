@@ -182,7 +182,7 @@ public class Appointment implements Initializable {
     /**
      * Contains one Lambda expressions for this method to get all the appointments from the database to display in the UI. To ensure this method of loading appointments is efficient, it uses lambda
      * expressions.
-     * The lambda expression creates an object that implements the ConvertDT interface. This method will take the date/time that is passed and convert it from UTC to the users default time zone.
+     * The lambda expression creates an object that implements the ConvertDT interface. This object will take the date/time that is passed and convert it from UTC to the users default time zone.
      */
     public void getAppointments() {
         ConvertDT dtConvert = (timestamp) -> {

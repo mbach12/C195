@@ -124,8 +124,7 @@ public class AddModAppointment implements Initializable {
 
     /**
      * Contains one Lambda expression for this method to get appointment data from the database. To ensure this method of getting appointments is efficient, it uses lambda expressions.
-     * The lambda expression will take the date/time and convert it from UTC to the local date/time on the machine.
-     * This method is used to get data for the specific appointment ID that is being modified.
+     * The lambda expression creates an object that implements the ConvertDT interface that will take the date/time and convert it from UTC to the local date/time on the machine.
      * @param appointment Appointment to modify
      */
     public void getData(Appointments appointment) {
