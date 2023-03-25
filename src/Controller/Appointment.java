@@ -270,7 +270,7 @@ public class Appointment implements Initializable {
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/View/AddModAppointment.fxml")));
             Parent root = loader.load();
             AddModAppointment addModAppointment = loader.getController();
-            addModAppointment.addFormData.setData();
+            addModAppointment.addFormData();
             Stage stage = new Stage();
             stage.setTitle("Add Appointment");
             stage.setScene(new Scene(root));
@@ -309,7 +309,7 @@ public class Appointment implements Initializable {
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/View/AddModAppointment.fxml")));
             Parent root = loader.load();
             AddModAppointment addModAppointment = loader.getController();
-            addModAppointment.addFormData.setData();
+            addModAppointment.addFormData();
             addModAppointment.getData(appTable.getSelectionModel().getSelectedItem());
             Stage stage = new Stage();
             stage.setTitle("Add Appointment");

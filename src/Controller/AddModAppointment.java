@@ -75,11 +75,11 @@ public class AddModAppointment implements Initializable {
 
 
     /**
-     * Lambda expression that creates an object that implements the SetData interface. This method will add contacts from the database to the contacts combo box and add
+     * This method will add contacts from the database to the contacts combo box and add
      * appointment times in increments of 15 minutes to the start/end time combo boxes.
      */
 
-    SetData addFormData = () -> {
+    public void addFormData() {
         ObservableList<String> formContactList = FXCollections.observableArrayList();
         ObservableList<LocalTime> formTimeList = FXCollections.observableArrayList();
         LocalTime timetrack = LocalTime.of(0,0);
@@ -123,7 +123,9 @@ public class AddModAppointment implements Initializable {
     }
 
     /**
-     * Method used to get data for the specific appointment ID that is being modified.
+     * Contains one Lambda expression for this method to get appointment data from the database. To ensure this method of getting appointments is efficient, it uses lambda expressions.
+     * The lambda expression will take the date/time and convert it from UTC to the local date/time on the machine.
+     * This method is used to get data for the specific appointment ID that is being modified.
      * @param appointment Appointment to modify
      */
     public void getData(Appointments appointment) {
