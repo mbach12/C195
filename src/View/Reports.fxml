@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Reports">
+   <children>
+      <Label fx:id="reportsLabel" layoutX="498.0" layoutY="7.0" text="Reports" textFill="#2f00bc">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font></Label>
+      <TabPane layoutX="5.0" layoutY="53.0" prefHeight="640.0" prefWidth="1192.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Total Appointments by Month/Type">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="r1Table" layoutX="374.0" layoutY="7.0" prefHeight="597.0" prefWidth="368.0">
+                          <columns>
+                            <TableColumn fx:id="r1Month" prefWidth="130.60000038146973" text="Month" />
+                            <TableColumn fx:id="r1Type" prefWidth="112.5999755859375" text="Type" />
+                              <TableColumn fx:id="r1Quantity" minWidth="0.0" prefWidth="124.39996337890625" text="Quantity" />
+                          </columns>
+                        </TableView>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Contact Schedules">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="appTable" layoutX="14.0" layoutY="38.0" prefHeight="567.0" prefWidth="1171.0">
+                          <columns>
+                            <TableColumn fx:id="appID" prefWidth="101.39999580383301" text="Appointment ID" />
+                            <TableColumn fx:id="appTitle" prefWidth="156.99999237060547" text="Title" />
+                              <TableColumn fx:id="appType" prefWidth="136.4000244140625" text="Type" />
+                              <TableColumn fx:id="appDesc" prefWidth="201.60000610351562" text="Description" />
+                              <TableColumn fx:id="appStart" prefWidth="227.20001220703125" text="Start Date &amp; Time" />
+                              <TableColumn fx:id="appEnd" prefWidth="249.5999755859375" text="End Date &amp; Time" />
+                              <TableColumn fx:id="appCid" prefWidth="101.4000244140625" text="Customer ID" />
+                          </columns>
+                        </TableView>
+                        <ComboBox fx:id="contact" layoutX="537.0" layoutY="7.0" onAction="#contactsClick" prefWidth="150.0" />
+                        <Label layoutX="408.0" layoutY="6.0" text="Select Contact">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="User Login Activity">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                         <TableView fx:id="r3Table" layoutX="13.0" layoutY="7.0" prefHeight="598.0" prefWidth="1172.0">
+                             <columns>
+                                 <TableColumn fx:id="r3Type" prefWidth="130.60000038146973" text="Type" />
+                                 <TableColumn fx:id="r3Status" prefWidth="144.79998779296875" text="Status" />
+                                 <TableColumn fx:id="r3User" minWidth="0.0" prefWidth="223.20001220703125" text="User" />
+                              <TableColumn fx:id="r3DT" prefWidth="337.00006103515625" text="Date/Time" />
+                              <TableColumn fx:id="r3Notes" prefWidth="335.79998779296875" text="Notes" />
+                             </columns>
+                         </TableView>
+                     </children></AnchorPane>
+                </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Button fx:id="back" layoutX="509.0" layoutY="737.0" mnemonicParsing="false" onAction="#backClick" text="Back to apppointments" />
+   </children>
+</AnchorPane>

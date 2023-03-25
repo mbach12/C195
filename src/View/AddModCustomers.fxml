@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddModCustomers">
+   <children>
+      <Label fx:id="customerLabel" alignment="CENTER" layoutX="115.0" layoutY="12.0" prefHeight="27.0" prefWidth="167.0" text="Customer" textFill="#2f00bc">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+      <Label layoutX="50.0" layoutY="60.0" text="Customer ID" />
+      <Label layoutX="50.0" layoutY="97.0" text="Name" />
+      <Label layoutX="50.0" layoutY="134.0" text="Address" />
+      <Label layoutX="50.0" layoutY="171.0" text="Postal Code" />
+      <Label layoutX="50.0" layoutY="208.0" text="Phone" />
+      <Label layoutX="50.0" layoutY="245.0" text="Country" />
+      <Label layoutX="50.0" layoutY="282.0" text="State/Province" />
+      <TextField fx:id="cID" disable="true" layoutX="130.0" layoutY="56.0" text="Auto-Generated" />
+      <TextField fx:id="cName" layoutX="131.0" layoutY="93.0" promptText="Enter name" />
+      <TextField fx:id="cAddress" layoutX="131.0" layoutY="130.0" promptText="Enter Address" />
+      <TextField fx:id="cPostal" layoutX="132.0" layoutY="167.0" promptText="Enter Postal" />
+      <TextField fx:id="cPhone" layoutX="133.0" layoutY="204.0" promptText="Enter Phone #" />
+      <ComboBox fx:id="cList" layoutX="133.0" layoutY="241.0" onAction="#cListClick" prefWidth="150.0" promptText="Select" />
+      <ComboBox fx:id="sList" layoutX="133.0" layoutY="278.0" prefWidth="150.0" promptText="Select" />
+      <Button fx:id="Save" layoutX="82.0" layoutY="341.0" mnemonicParsing="false" onAction="#saveClick" text="Save" />
+      <Button fx:id="Cancel" layoutX="231.0" layoutY="341.0" mnemonicParsing="false" onAction="#cancelClick" text="Cancel" />
+   </children>
+</AnchorPane>
