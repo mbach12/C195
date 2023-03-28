@@ -202,15 +202,22 @@ public class AddModAppointment implements Initializable {
             } else { return true; }
         };
 
-        CheckOverlap overlap = (cID, start, end) -> {
+        CheckOverlap overlap = (cID, aID, start, end) -> {
             Connection connection = JDBC.getConnection();
             boolean check = true;
             Alert olAlert = new Alert(Alert.AlertType.ERROR);
             olAlert.setTitle("Schedule Conflict");
             olAlert.setContentText("This date/time conflicts with an existing appointment for this customer.\n Please enter a different date/time");
             try {
-                PreparedStatement overlapSTMNT = connection.prepareStatement(Queries.getAppointmentsByCustomerID());
+                String query = null;
+                if(Appointment.inModify == true) { query = Queries.getAppointmentsByCustomerIDForUpdate();
+                } else { query = Queries.getAppointmentsByCustomerID(); }
+                PreparedStatement overlapSTMNT = connection.prepareStatement(query);
                 overlapSTMNT.setInt(1, cID);
+                if(Appointment.inModify == true) {
+                    overlapSTMNT.setInt(2, aID);
+                }
+
                 ResultSet results = overlapSTMNT.executeQuery();
                 while(results.next()) {
                     LocalDateTime startCheck = results.getTimestamp("Start").toLocalDateTime();
@@ -231,7 +238,12 @@ public class AddModAppointment implements Initializable {
 
         try {
         Connection connection = JDBC.getConnection();
+        int appointmentID = 0;
+        if(Appointment.inModify == true) {
+            appointmentID = Integer.parseInt(appID.getText());
+        }
         int customerID = Integer.parseInt(appCustomerID.getText());
+
         int userID = Integer.parseInt(appUserID.getText());
         String title = appTitle.getText();
         String desc = appDesc.getText();
@@ -239,18 +251,28 @@ public class AddModAppointment implements Initializable {
         String type = appType.getText();
         String contact = (String) cName.getSelectionModel().getSelectedItem();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        //Start date/time to UTC
         LocalDate startDate = appStartDate.getValue();
         LocalTime startTime = appStartTime.getSelectionModel().getSelectedItem();
         LocalDateTime formatStartDateTime = LocalDateTime.of(startDate, startTime);
+        ZonedDateTime zonedStartDateTime = formatStartDateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+        ZonedDateTime zonedStartDateTimeUTC = zonedStartDateTime.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime utcStart = zonedStartDateTimeUTC.toLocalDateTime();
         Instant startDateTime = Timestamp.valueOf(formatStartDateTime.format(dateTimeFormatter)).toInstant();
+
+        //Ebd date/time to UTC
         LocalDate endDate = appEndDate.getValue();
         LocalTime endTime = appEndTime.getSelectionModel().getSelectedItem();
         LocalDateTime formatEndDateTime = LocalDateTime.of(endDate, endTime);
+        ZonedDateTime zonedEndDateTime = formatEndDateTime.atZone(ZoneId.of(ZoneId.systemDefault().toString()));
+        ZonedDateTime zonedEndDateTimeUTC = zonedEndDateTime.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime utcEnd = zonedEndDateTimeUTC.toLocalDateTime();
         Instant endDateTime = Timestamp.valueOf(formatEndDateTime.format(dateTimeFormatter)).toInstant();
-        Instant formatNowDateTime = Timestamp.valueOf(LocalDateTime.now().format(dateTimeFormatter)).toInstant();
 
-        LocalDateTime utcStart = LocalDateTime.ofInstant(startDateTime, ZoneId.of("UTC"));
-        LocalDateTime utcEnd = LocalDateTime.ofInstant(endDateTime, ZoneId.of("UTC"));
+        //LocalDateTime utcStart = LocalDateTime.ofInstant(startDateTime, ZoneId.of("UTC"));
+        //LocalDateTime utcEnd = LocalDateTime.ofInstant(endDateTime, ZoneId.of("UTC"));
+        Instant formatNowDateTime = Timestamp.valueOf(LocalDateTime.now().format(dateTimeFormatter)).toInstant();
         LocalDateTime utcNow = LocalDateTime.ofInstant(formatNowDateTime, ZoneId.of("UTC"));
 
         if (startDateTime.equals(endDateTime)) {
@@ -258,13 +280,15 @@ public class AddModAppointment implements Initializable {
             olAlert.setTitle("Invalid Date/Time");
             olAlert.setContentText("The start Date/Time can't be the same as the end Date/Time.");
             olAlert.showAndWait();
+            return;
         } else if (endDateTime.isBefore(startDateTime)) {
             Alert olAlert = new Alert(Alert.AlertType.ERROR);
             olAlert.setTitle("Invalid Date/Time");
             olAlert.setContentText("The end Date/Time can't be before the start Date/Time.");
             olAlert.showAndWait();
+            return;
         }
-        if (checkDT.validate(startDateTime) && checkDT.validate(endDateTime) && startDateTime.isBefore(endDateTime) && overlap.validate(customerID, utcStart, utcEnd)) {
+        if (checkDT.validate(startDateTime) && checkDT.validate(endDateTime) && startDateTime.isBefore(endDateTime) && overlap.validate(customerID, appointmentID, utcStart, utcEnd)) {
 
                 PreparedStatement getContact = connection.prepareStatement(Queries.getContactIdFromName());
                 getContact.setString(1, contact);
@@ -277,12 +301,10 @@ public class AddModAppointment implements Initializable {
                 result2.next();
                 String username = result2.getString("User_Name");
                 String appQuery = null;
-                int appointmentID = 0;
                 if (Appointment.inModify == false) {
                     appQuery = Queries.addAppointment();
                 } else if (Appointment.inModify == true) {
                     appQuery = Queries.updateAppointment();
-                    appointmentID = Integer.parseInt(appID.getText());
                 }
                 PreparedStatement addUpdateAppointment = connection.prepareStatement(appQuery);
 
@@ -325,6 +347,7 @@ public class AddModAppointment implements Initializable {
             exceptionAlert.setTitle("Invalid Data");
             exceptionAlert.setContentText("User ID and Customer ID must be numeric");
             exceptionAlert.showAndWait();
+            System.out.println(exception.getMessage());
         } catch (NullPointerException exception) {
             Alert exceptionAlert = new Alert(Alert.AlertType.ERROR);
             exceptionAlert.setTitle("Missing Data");

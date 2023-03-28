@@ -86,6 +86,7 @@ public class Queries {
      * @return Query to get the appointment id, start and end date/time by customer id.
      */
     public static String getAppointmentsByCustomerID() { return "SELECT Appointment_ID, Start, End FROM appointments WHERE Customer_ID = ?"; }
+    public static String getAppointmentsByCustomerIDForUpdate() { return "SELECT Appointment_ID, Start, End FROM appointments WHERE Customer_ID = ? AND Appointment_ID <> ?"; }
     /**
      * Method to return a query to get the start and end date/time for appointments by appointment id.
      * @return Query to get the start and end date/time for appointments by appointment id.

@@ -186,10 +186,11 @@ public class Appointment implements Initializable {
      */
     public void getAppointments() {
         ConvertDT dtConvert = (timestamp) -> {
-            LocalDateTime localDT = timestamp.toLocalDateTime();
-            ZonedDateTime zoneDT = localDT.atZone(ZoneId.of("UTC"));
-            ZonedDateTime finalZDT = zoneDT.withZoneSameInstant(ZoneId.of(ZoneId.systemDefault().toString()));
-            return finalZDT.toLocalDateTime();
+            LocalDateTime tsToLDT = timestamp.toLocalDateTime();
+            ZonedDateTime ldtUTC = tsToLDT.atZone(ZoneId.of("UTC"));
+            ZonedDateTime zdtOutToLocalTZ = ldtUTC.withZoneSameInstant(ZoneId.of(ZoneId.systemDefault().toString()));
+            LocalDateTime ldtOutFinal = zdtOutToLocalTZ.toLocalDateTime();
+            return ldtOutFinal;
         };
         try {
             Connection connection = JDBC.getConnection();
@@ -202,10 +203,13 @@ public class Appointment implements Initializable {
                 String appLocation = results.getString("Location");
                 String appType = results.getString("Type");
                 DateTimeFormatter dtFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy hh':'mm a");
-                Timestamp appStart = results.getTimestamp("Start");
-                String convertedStart = dtFormat.format(dtConvert.convertDT(appStart));
-                Timestamp appEnd = results.getTimestamp("End");
-                String convertedEnd = dtFormat.format(dtConvert.convertDT(appEnd));
+
+                String appStart = results.getString("Start");
+                String convertedStart = dtFormat.format(dtConvert.convertDT(Timestamp.valueOf(appStart)));
+
+                String appEnd = results.getString("End");
+                String convertedEnd = dtFormat.format(dtConvert.convertDT(Timestamp.valueOf(appEnd)));
+
                 int appCustomerID = results.getInt("Customer_ID");
                 int appUserID = results.getInt("User_ID");
                 int appContactID = results.getInt("Contact_ID");
@@ -440,8 +444,8 @@ public class Appointment implements Initializable {
         PreparedStatement checkApp = connection.prepareStatement(Queries.getAllAppointments());
         ResultSet results = checkApp.executeQuery();
         while(results.next()) {
-            Timestamp appStart = results.getTimestamp("Start");
-            String convertedStart = formatter.format(dtConvert.convertDT(appStart));
+            String appStart = results.getString("Start");
+            String convertedStart = formatter.format(dtConvert.convertDT(Timestamp.valueOf(appStart)));
             LocalDateTime start = LocalDateTime.parse(convertedStart, formatter);
             long minutes = ChronoUnit.MINUTES.between(currentDT, start);
             if(minutes <= 15 && minutes > 0) {
@@ -454,8 +458,8 @@ public class Appointment implements Initializable {
                 String location = results.getString("Location");
                 String cName = "";
                 String type = results.getString("Type");
-                Timestamp appStart1 = results.getTimestamp("Start");
-                String convertedStart1 = formatter.format(dtConvert.convertDT(appStart1));
+                String appStart1 = results.getString("Start");
+                String convertedStart1 = formatter.format(dtConvert.convertDT(Timestamp.valueOf(appStart1)));
                 Timestamp appEnd = results.getTimestamp("End");
                 String convertedEnd = formatter.format(dtConvert.convertDT(appEnd));
                 Appointments appointment = new Appointments(id, cID, uID, contactID, title, desc, location, cName, type, convertedStart1, convertedEnd);
