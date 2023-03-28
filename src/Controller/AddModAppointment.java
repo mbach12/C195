@@ -261,7 +261,7 @@ public class AddModAppointment implements Initializable {
         LocalDateTime utcStart = zonedStartDateTimeUTC.toLocalDateTime();
         Instant startDateTime = Timestamp.valueOf(formatStartDateTime.format(dateTimeFormatter)).toInstant();
 
-        //Ebd date/time to UTC
+        //End date/time to UTC
         LocalDate endDate = appEndDate.getValue();
         LocalTime endTime = appEndTime.getSelectionModel().getSelectedItem();
         LocalDateTime formatEndDateTime = LocalDateTime.of(endDate, endTime);
