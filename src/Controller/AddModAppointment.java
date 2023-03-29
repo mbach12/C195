@@ -312,9 +312,9 @@ public class AddModAppointment implements Initializable {
                 addUpdateAppointment.setString(2, desc);
                 addUpdateAppointment.setString(3, location);
                 addUpdateAppointment.setString(4, type);
-                addUpdateAppointment.setTimestamp(5, Timestamp.valueOf(utcStart));
-                addUpdateAppointment.setTimestamp(6, Timestamp.valueOf(utcEnd));
-                addUpdateAppointment.setTimestamp(7, Timestamp.valueOf(utcNow));
+                addUpdateAppointment.setString(5, String.valueOf(utcStart));
+                addUpdateAppointment.setString(6, String.valueOf(utcEnd));
+                addUpdateAppointment.setString(7, String.valueOf(utcNow));
                 addUpdateAppointment.setString(8, username);
                 addUpdateAppointment.setInt(9, customerID);
                 addUpdateAppointment.setInt(10, userID);
