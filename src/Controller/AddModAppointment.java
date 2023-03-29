@@ -203,6 +203,7 @@ public class AddModAppointment implements Initializable {
         };
 
         CheckOverlap overlap = (cID, aID, start, end) -> {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             Connection connection = JDBC.getConnection();
             boolean check = true;
             Alert olAlert = new Alert(Alert.AlertType.ERROR);
@@ -220,8 +221,11 @@ public class AddModAppointment implements Initializable {
 
                 ResultSet results = overlapSTMNT.executeQuery();
                 while(results.next()) {
-                    LocalDateTime startCheck = results.getTimestamp("Start").toLocalDateTime();
-                    LocalDateTime endCheck = results.getTimestamp("End").toLocalDateTime();
+                    String startCheckString = results.getString("Start");
+                    LocalDateTime startCheck = LocalDateTime.parse(startCheckString, dateTimeFormatter);
+                    String endCheckString = results.getString("End");
+                    LocalDateTime endCheck = LocalDateTime.parse(endCheckString, dateTimeFormatter);
+                    //LocalDateTime endCheck = results.getTimestamp("End").toLocalDateTime();
                     if((startCheck.isAfter(start) || startCheck.equals(start)) && startCheck.isBefore(end)) { check = false; }
                     else if ((startCheck.isBefore(start) || startCheck.isEqual(start)) && (endCheck.isAfter(end) || endCheck.isEqual(end))) { check = false; }
                     else if ((endCheck.isAfter(start) && endCheck.isBefore(end)) || endCheck.equals(end)) { check = false; }
