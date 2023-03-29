@@ -141,10 +141,10 @@ public class AddModAppointment implements Initializable {
             query.setInt(1,appointment.getAppID());
             ResultSet result = query.executeQuery();
             result.next();
-            Timestamp resultStart = result.getTimestamp("Start");
-            Timestamp resultEnd = result.getTimestamp("End");
-            Timestamp convertedStart = Timestamp.valueOf(dtConvert.convertDT(resultStart));
-            Timestamp convertedEnd = Timestamp.valueOf(dtConvert.convertDT(resultEnd));
+            String resultStart = result.getString("Start");
+            String resultEnd = result.getString("End");
+            Timestamp convertedStart = Timestamp.valueOf(dtConvert.convertDT(Timestamp.valueOf(resultStart)));
+            Timestamp convertedEnd = Timestamp.valueOf(dtConvert.convertDT(Timestamp.valueOf(resultEnd)));
             appTitle.setText(appointment.getTitle());
             appDesc.setText(appointment.getDescription());
             appLocation.setText(appointment.getLocation());
